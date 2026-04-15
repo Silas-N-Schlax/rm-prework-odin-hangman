@@ -55,10 +55,10 @@ class Play
 
   def save_game
     game_data = {
-      wrong_guesses: @wrong_guesses,
-      letters_guessed: @board.letters_guessed,
-      letters_reavealed: @board.letters_reavealed,
-      secret_word: @secret_word
+      "wrong_guesses" => @wrong_guesses,
+      "letters_guessed" => @board.letters_guessed,
+      "letters_reavealed" => @board.letters_reavealed,
+      "secret_word" => @secret_word
     }
     Save.new.save(game_data)
     puts "Game saved! See you later!".colorize(:yellow)

@@ -1,16 +1,18 @@
 # Generate, Manager, Update, and Send board
 class Board
-  attr_accessor :letters_guessed, :letters_revealed, :pl
+  attr_accessor :letters_guessed, :letters_reavealed, :pl
 
   def initialize
     @body_parts = ["O", "|", "/", "\\", "|", "/", "\\"]
     @pl = Array.new(7, " ") # parts lost
     @letters_guessed = Array.new(26, "_")
-    @letters_reavealed = Array.new(12, "_")
+    @letters_reavealed = Array.new(12, " ")
   end
 
+  # ! Add load board method
+
   def update_parts_lost(lost)
-    for i in 0..lost
+    for i in 0..(lost - 1)
       @pl[i] = @body_parts[i]
     end
   end
@@ -26,6 +28,12 @@ class Board
 
   def send_board
     puts generate_board
+  end
+
+  def secret_word_length(word)
+    for i in 0..(word.length - 1)
+      @letters_reavealed[i] = "_"
+    end
   end
 
   def generate_board

@@ -7,3 +7,5 @@ source "https://rubygems.org"
 gem "rubocop", "~> 1.86"
 
 gem "json", "~> 2.19"
+
+gem "colorize", "~> 1.1"

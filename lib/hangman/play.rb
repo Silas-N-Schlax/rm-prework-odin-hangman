@@ -1,6 +1,7 @@
 require "colorize"
 require_relative "board"
 require_relative "new_word"
+require_relative "save"
 # Play Hangman and control everything
 class Play
   def initialize
@@ -13,10 +14,11 @@ class Play
 
   def play
     input = user_input
+    return nil if input == "@"
+
     right_letter?(input) ? right_guess(input) : wrong_guess(input)
     @board.send_board
     play unless game_over?
-    puts "Game Over!".colorize(:orange)
   end
 
   def right_letter?(guess)
@@ -30,15 +32,16 @@ class Play
   end
 
   def right_guess(guess)
-    indexes = @secret_word.chars.each_index.select { |i| @secret_word[i] == guess}
+    indexes = @secret_word.chars.each_index.select { |i| @secret_word[i] == guess }
     @board.update_revealed_letters(guess, indexes)
   end
 
-  def user_input(msg = "What letter would you like to guess? -> ", color = :blue)
+  def user_input(msg = "What letter would you like to guess? (save = @) -> ", color = :blue)
     print msg.colorize(color)
     input = gets.chomp.downcase.chars.first
-    msg = "Enter a LETTER, or a letter you have not guessed -> "
-    input = user_input(msg, :red) unless valid_input?(input)
+    msg = "Enter a LETTER, or a letter you have not guessed (save = @) -> "
+    input = user_input(msg, :red) unless valid_input?(input) || input == "@"
+    save_game if input == "@"
     input
   end
 
@@ -48,6 +51,17 @@ class Play
 
   def game_over?
     true if @wrong_guesses >= 7 || @board.letters_reavealed.all? { |item| item != "_" }
+  end
+
+  def save_game
+    game_data = {
+      wrong_guesses: @wrong_guesses,
+      letters_guessed: @board.letters_guessed,
+      letters_reavealed: @board.letters_reavealed,
+      secret_word: @secret_word
+    }
+    Save.new.save(game_data)
+    puts "Game saved! See you later!".colorize(:yellow)
   end
 end
 

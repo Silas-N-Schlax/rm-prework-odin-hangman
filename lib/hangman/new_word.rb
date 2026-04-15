@@ -2,7 +2,7 @@
 class NewWord
   attr_reader :word
 
-  def initalize
+  def initialize
     @word = random_word
   end
 

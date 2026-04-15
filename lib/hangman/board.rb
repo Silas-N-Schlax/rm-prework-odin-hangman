@@ -17,8 +17,8 @@ class Board
     end
   end
 
-  def update_revealed_letters(letter, idx)
-    @letters_reavealed[idx] = letter.upcase
+  def update_revealed_letters(letter, indexes)
+    indexes.each { |index| @letters_reavealed[index] = letter.upcase }
   end
 
   def update_guessed_letters(letter)

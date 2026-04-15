@@ -6,6 +6,7 @@ class Play
   def initialize
     @board = Board.new
     @secret_word = NewWord.new.word
+    p @secret_word
     @board.secret_word_length(@secret_word.chars)
     @wrong_guesses = 0
   end
@@ -29,7 +30,8 @@ class Play
   end
 
   def right_guess(guess)
-    @board.update_revealed_letters(guess, @secret_word.chars.index(guess))
+    indexes = @secret_word.chars.each_index.select { |i| @secret_word[i] == guess}
+    @board.update_revealed_letters(guess, indexes)
   end
 
   def user_input(msg = "What letter would you like to guess? -> ", color = :blue)

@@ -1,3 +1,4 @@
+require "colorize"
 # Generate, Manager, Update, and Send board
 class Board
   attr_accessor :letters_guessed, :letters_reavealed, :pl
@@ -27,7 +28,8 @@ class Board
   end
 
   def send_board
-    puts generate_board
+    board = generate_board
+    board.each { |row| puts row.colorize(:green) }
   end
 
   def secret_word_length(word)

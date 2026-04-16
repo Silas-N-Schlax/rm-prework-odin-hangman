@@ -15,6 +15,7 @@ class Play
 
   def load_game
     saved_game = Load.new.load
+    play if saved_game.nil?
     @wrong_guesses = saved_game["wrong_guesses"]
     @secret_word = saved_game["secret_word"]
     @board.load_board(saved_game)

@@ -2,6 +2,7 @@ require "colorize"
 require_relative "board"
 require_relative "new_word"
 require_relative "save"
+require_relative "load"
 # Play Hangman and control everything
 class Play
   def initialize
@@ -10,6 +11,16 @@ class Play
     p @secret_word
     @board.secret_word_length(@secret_word.chars)
     @wrong_guesses = 0
+  end
+
+  def load_game
+    saved_game = Load.new.load
+    @wrong_guesses = saved_game["wrong_guesses"]
+    @secret_word = saved_game["secret_word"]
+    @board.load_board(saved_game)
+    @board.send_board
+    puts "Game loaded!".colorize(:yellow)
+    play
   end
 
   def play
@@ -54,6 +65,8 @@ class Play
   end
 
   def save_game
+    print "This will erase any other saved game. Do you want to continue? (y/n) -> ".colorize(:light_red)
+    play unless gets.chomp.downcase.chars.first == "y"
     game_data = {
       "wrong_guesses" => @wrong_guesses,
       "letters_guessed" => @board.letters_guessed,
@@ -64,6 +77,3 @@ class Play
     puts "Game saved! See you later!".colorize(:yellow)
   end
 end
-
-play = Play.new
-p play.play

@@ -24,12 +24,13 @@ class Play
   end
 
   def play
+    @board.send_board
     input = user_input
     return nil if input == "@"
 
     right_letter?(input) ? right_guess(input) : wrong_guess(input)
-    @board.send_board
     play unless game_over?
+    @board.send_board if game_over?
   end
 
   def right_letter?(guess)

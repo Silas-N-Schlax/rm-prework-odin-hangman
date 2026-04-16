@@ -55,6 +55,7 @@ Navigate to the project directory:
 cd rm-prework-odin-hangman
 ```
 
+Bundle for Rubocop, Colorize, and JSON
 ```bash
 bundle install
 ```

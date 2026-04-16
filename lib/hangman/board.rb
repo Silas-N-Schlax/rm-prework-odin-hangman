@@ -10,7 +10,11 @@ class Board
     @letters_reavealed = Array.new(12, " ")
   end
 
-  # ! Add load board method
+  def load_board(data)
+    @letters_guessed = data["letters_guessed"]
+    @letters_reavealed = data["letters_reavealed"]
+    update_parts_lost(data["wrong_guesses"])
+  end
 
   def update_parts_lost(lost)
     for i in 0..(lost - 1)

@@ -8,7 +8,6 @@ class Play
   def initialize
     @board = Board.new
     @secret_word = NewWord.new.word
-    p @secret_word
     @board.secret_word_length(@secret_word.chars)
     @wrong_guesses = 0
   end

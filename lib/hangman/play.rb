@@ -5,6 +5,8 @@ require_relative "save"
 require_relative "load"
 # Play Hangman and control everything
 class Play
+  attr_reader :secret_word
+
   def initialize
     @board = Board.new
     @secret_word = NewWord.new.word
@@ -14,7 +16,8 @@ class Play
 
   def load_game
     saved_game = Load.new.load
-    play if saved_game.nil?
+    return play if saved_game.nil?
+
     @wrong_guesses = saved_game["wrong_guesses"]
     @secret_word = saved_game["secret_word"]
     @board.load_board(saved_game)
@@ -30,7 +33,7 @@ class Play
 
     right_letter?(input) ? right_guess(input) : wrong_guess(input)
     play unless game_over?
-    @board.send_board if game_over?
+    @board.send_board && send_word if game_over?
   end
 
   def right_letter?(guess)
@@ -65,9 +68,15 @@ class Play
     true if @wrong_guesses >= 7 || @board.letters_reavealed.all? { |item| item != "_" }
   end
 
+  def send_word
+    print "The word was: "
+    puts @secret_word.colorize(:magenta)
+  end
+
   def save_game
     print "This will erase any other saved game. Do you want to continue? (y/n) -> ".colorize(:light_red)
-    play unless gets.chomp.downcase.chars.first == "y"
+    return play unless gets.chomp.downcase.chars.first == "y"
+
     game_data = {
       "wrong_guesses" => @wrong_guesses,
       "letters_guessed" => @board.letters_guessed,
